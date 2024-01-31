@@ -30,6 +30,14 @@ s3=boto3.client('s3',aws_access_key_id=key_config.Access_key_ID,aws_secret_acces
 def upload(file: UploadFile):
     s3.upload_fileobj(file.file,'docurepo',file.filename)
     print('true')
+
+@app.post("/s3/download")
+def download(name: dict):
+    filename=name['filename']
+    print(filename)
+    s3.download_file('docurepo',filename,'C:/Users/yuvaraaj.s/Downloads/'+filename)
+    
+    return True
     
 
 
