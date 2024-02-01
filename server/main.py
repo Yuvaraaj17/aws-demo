@@ -24,7 +24,7 @@ app.add_middleware(
 
 
 s3=boto3.client('s3',aws_access_key_id=key_config.Access_key_ID,aws_secret_access_key=key_config.Secret_access_key,region_name='ap-south-1')
-
+dynamodb=boto3.resource('dynamodb',aws_access_key_id=key_config.Access_key_ID,aws_secret_access_key=key_config.Secret_access_key,region_name='ap-south-1')
 
 @app.post("/s3/upload")
 def upload(file: UploadFile):
@@ -38,7 +38,24 @@ def download(name: dict):
     s3.download_file('docurepo',filename,'C:/Users/yuvaraaj.s/Downloads/'+filename)
     
     return True
+
+@app.post("/dynamodb/add")
+def add_record(record: dict):
+    table=dynamodb.Table('User_Details')
+    table.put_item(Item=record)
+
+
+@app.get("/dynamodb/get")
+def get_items():
+    table=dynamodb.Table('User_Details')
+    resp=table.scan()
+    return resp['Items']
+
+
+# @app.post("/dynamodb/get") #get a item by the primary key
+# def getitems(key : dict):
+#     table=dynamodb.Table('User_Details')
+#     response=table.get_item(Key=key)
+#     return response["Item"]
     
-
-
 

@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 
 export default function Upload() {
     const [file, setFile] = useState("")
-    var filename=useRef("")
+    var filename=useRef<HTMLInputElement>(null)
 
     const handleChange = (event: any) => {
         setFile(
@@ -36,7 +36,7 @@ export default function Upload() {
     }
 
     const download = ()=>{
-        var fileobj={filename:filename.current.value}
+        var fileobj={filename:filename.current!.value}
         
         fetch(
             "http://localhost:8000/s3/download",
